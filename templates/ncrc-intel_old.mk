@@ -6,9 +6,9 @@
 ############
 # Commands Macros
 ############
-FC = mpif90
-CC = mpicc
-LD = mpif90 $(MAIN_PROGRAM)
+FC = ftn
+CC = cc
+LD = ftn $(MAIN_PROGRAM)
 
 #######################
 # Build target macros
