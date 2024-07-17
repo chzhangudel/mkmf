@@ -1,14 +1,14 @@
-# Template for the Intel Compilers on a Cray System
+# Template for the Intel Compilers on the Princeton stellar system
 #
 # Typical use with mkmf
-# mkmf -t ncrc-cray.mk -c"-Duse_libMPI -Duse_netCDF" path_names /usr/local/include
+# mkmf -t stellar-amd-intel.mk -c "-Duse_libMPI -Duse_netCDF" path_names
 
 ############
 # Commands Macros
 ############
-FC = ftn
-CC = cc
-LD = ftn $(MAIN_PROGRAM)
+FC = mpif90
+CC = mpicc
+LD = mpif90 $(MAIN_PROGRAM)
 
 #######################
 # Build target macros
@@ -49,9 +49,10 @@ NETCDF =             # If value is '3' and CPPDEFS contains
 INCLUDES =           # A list of -I Include directories to be added to the
                      # the compile command.
 
-ISA = -xsse2         # The Intel Instruction Set Archetecture (ISA) compile
+ISA = -march=core-avx2         # The Intel Instruction Set Archetecture (ISA) compile
                      # option to use.  If blank, than use the default SSE
                      # settings for the host.  Current default is to use SSE2.
+		     # -march=core-avx2
 
 COVERAGE =           # Add the code coverage compile options.
 
@@ -186,6 +187,8 @@ LDFLAGS += $(LDFLAGS_COVERAGE) $(PROF_DIR)
 endif
 
 LDFLAGS += $(LIBS)
+LDFLAGS += $(shell nf-config --flibs)
+LDFLAGS += $(shell nc-config --libs)
 
 #---------------------------------------------------------------------------
 # you should never need to change any lines below.

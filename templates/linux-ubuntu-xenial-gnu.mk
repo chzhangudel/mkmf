@@ -1,7 +1,9 @@
 # Template for the GNU Compiler Collection on Trusty version of Ubuntu Linux systems (used by Travis-CI)
 #
 # Typical use with mkmf
-# mkmf -t linux-ubuntu-trusty-gnu.mk -c"-Duse_libMPI -Duse_netCDF" path_names /usr/local/include
+# mkmf -t linux-ubuntu-xenial-gnu.mk -c"-Duse_libMPI -Duse_netCDF" path_names /usr/local/include
+#
+# Designed to work on Ubuntu-16
 
 ############
 # Commands Macors
@@ -76,6 +78,12 @@ endif
 endif
 
 MAKEFLAGS += --jobs=$(shell grep '^processor' /proc/cpuinfo | wc -l)
+
+# Required Preprocessor Macros:
+CPPDEFS += -Duse_netCDF
+
+# Additional Preprocessor Macros needed due to  Autotools and CMake
+CPPDEFS += -DHAVE_SCHED_GETAFFINITY
 
 # Macro for Fortran preprocessor
 FPPFLAGS := $(INCLUDES)
